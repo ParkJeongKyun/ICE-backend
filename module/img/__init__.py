@@ -1,6 +1,8 @@
 from PIL import Image
+import logging
 #from PIL.ExifTags import TAGS
 
+# 필터 리스트
 SELECT_LIST = {
     256: 'ImageWidth', # 이미지 너비
     257: 'ImageLength', # 이미지 길이/높이
@@ -16,16 +18,17 @@ SELECT_LIST = {
     42016: 'ImageUniqueID' # 이미지 ID
 }
 
+# EXIF 데이터 얻기
 def get_exif_data(img_path):
     try:
         img = Image.open(img_path)
         exif_data = img._getexif()
         img.close()
-    except Exception as E:
+    except Exception as E: # 이미지를 불러올 수 없는 경우
         exif_data = None
-    if exif_data is None:
+    if exif_data is None: # EXIF 데이터가 없는 경우 N
         return None
-    if exif_data is not None:
+    if exif_data is not None: # EXIF 데이터가 있는 경우
         taglabel = { "EXIF" : True }
         for id in SELECT_LIST :
             if id in exif_data.keys():
@@ -36,16 +39,17 @@ def get_exif_data(img_path):
                         val = exif_data[id].decode("utf-8")
                     except:
                         val = exif_data[id]
-                elif id in (306, 36867,  36868):
+                elif id in (306, 36867, 36868): # 시간 정보 포메팅 
                     tmp = exif_data[id].split()
                     val = "{0} {1}".format(tmp[0].replace(":", "-"), tmp[1])
                 else:
                     val = exif_data[id]
             else:
-                val = None
+                val = None # 해당 태그 정보가 없는 경우
             taglabel[SELECT_LIST[id]] = val
         return taglabel
 
+# GPS 데이터 얻기
 def get_gps_data(exifGPS):
     try: 
         latData = exifGPS[2]
@@ -79,4 +83,5 @@ def get_gps_data(exifGPS):
         #return '{0},{1}'.format(Lat, Lon)
         return (Lat, Lon)
     except Exception as E:
+        logging.error(E)
         return None

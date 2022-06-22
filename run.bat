@@ -1,3 +1,4 @@
+rem 로컬 환경에서 실행을 위함
 rem set FLASK_APP=cert
 set FLASK_ENV=development
 rem set FLASK_ENV=production

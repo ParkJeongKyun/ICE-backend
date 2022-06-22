@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flask,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask,python
 
+# custom
+run.bat
+
 ### Flask ###
 instance/*
 !instance/.gitignore
