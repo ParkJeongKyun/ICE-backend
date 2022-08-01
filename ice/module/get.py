@@ -35,7 +35,7 @@ def get_exif_data(img_path) -> Optional[ExifData]:
         for id in SELECT_LIST :
             if id in exif_data.keys():
                 val = exif_data[id]
-                if val:
+                if val is not None: # 값이 비어 있지만 않은 경우(0도 가능)
                     if id == 34853: # GPS 위치 정보
                         val = get_gps_data(exif_data[id])
                     elif id == 36864: # EXIF 버전
