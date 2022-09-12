@@ -1,3 +1,4 @@
+import os
 import sys
 import uvicorn
 from fastapi import FastAPI
@@ -9,6 +10,10 @@ sys.path.append("./ice")
 
 # router
 from routers import api
+
+# 로그 디렉토리 생성
+if not os.path.exists("log"):
+    os.mkdir('log')
 
 # 로깅
 logging.basicConfig(filename="log/log.log", level=logging.ERROR)
